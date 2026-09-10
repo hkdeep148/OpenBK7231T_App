@@ -472,6 +472,33 @@ static const uint16_t wz_vol_up_raw[71] = {
     37824,8544,2160,576
 };
 
+static const uint16_t wz_menu_raw[71] = {
+    11520,5696,
+    704,704,768,2112,768,2112,
+    768,704,704,704,768,704,704,704,
+    768,2112,768,2112,768,2112,768,704,
+    704,2176,704,704,768,2112,768,2112,
+    768,704,704,2048,768,2112,768,1984,
+    768,2112,768,2112,768,704,704,640,
+    768,704,768,640,768,704,704,704,
+    704,768,704,704,704,2176,704,2176,
+    704,2176,704,
+    50496,11456,2880,768
+};
+
+extern "C" commandResult_t IR_Send_Menu_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
+    if (!pIRsend) {
+        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR Menu test: transmitter not running");
+        return CMD_RES_ERROR;
+    }
+
+    pIRsend->sendRaw(wz_menu_raw, 71, 38);
+    pIRsend->delay(100);
+
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO Menu");
+    return CMD_RES_OK;
+}
+
 extern "C" commandResult_t IR_Send_VolDown_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
     if (!pIRsend) {
         ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR Volume Down test: transmitter not running");
@@ -936,6 +963,7 @@ extern "C" void DRV_IR_Init() {
 			CMD_RegisterCommand("IRRightTest", IR_Send_Right_Test, NULL);
 			CMD_RegisterCommand("IRVolDownTest", IR_Send_VolDown_Test, NULL);
 			CMD_RegisterCommand("IRVolUpTest", IR_Send_VolUp_Test, NULL);
+			CMD_RegisterCommand("IRMenuTest", IR_Send_Menu_Test, NULL);
 			//cmddetail:{"name":"IRAC","args":"[TODO]",
 			//cmddetail:"descr":"Sends IR commands for HVAC control (TODO)",
 			//cmddetail:"fn":"IR_AC_Cmd","file":"driver/drv_ir_new.cpp","requires":"ENABLE_DRIVER_IRREMOTEESP (IRremoteESP8266)",
