@@ -385,9 +385,18 @@ static const uint16_t wz_ok_raw[71] = {
     38016, 8496, 1968, 576
 };
 
-static void IR_Send_OK_Test(const void *arg) {
+extern "C" commandResult_t IR_Send_OK_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
+    if (!pIRsend) {
+        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR OK test: transmitter not running");
+        return CMD_RES_ERROR;
+    }
+
     pIRsend->sendRaw(wz_ok_raw, 71, 38);
     pIRsend->delay(100);
+
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO OK");
+
+    return CMD_RES_OK;
 }
 
 extern "C" commandResult_t IR_Send_Raw_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
