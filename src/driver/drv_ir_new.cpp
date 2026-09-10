@@ -356,6 +356,32 @@ extern "C" void DRV_IR_ISR(void* arg)
 	ir_counter++;
 }
 
+static const uint16_t wz_source_raw[67] = {
+    8640,4272,
+    480,528,480,1584,576,1488,
+    336,480,480,480,576,480,384,528,
+    480,1584,576,1536,432,1536,576,480,
+    576,1488,576,480,144,1488,384,1392,
+    480,480,528,1536,576,1536,528,528,
+    528,1440,576,528,576,528,528,528,
+    576,528,528,528,480,480,480,1488,
+    528,336,336,1632,528,1632,528,1584,
+    576,1536,576
+};
+
+extern "C" commandResult_t IR_Send_Raw_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
+    if (!pIRsend) {
+        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR raw test: transmitter not running");
+        return CMD_RES_ERROR;
+    }
+
+    pIRsend->sendRaw(wz_source_raw, 67, 38);
+    pIRsend->delay(100);
+
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO Source");
+    return CMD_RES_OK;
+}
+
 
 extern "C" commandResult_t IR_Send_Cmd(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
 	if (!args_in) return CMD_RES_NOT_ENOUGH_ARGUMENTS;
@@ -707,6 +733,7 @@ extern "C" void DRV_IR_Init() {
 			//cmddetail:"fn":"IR_Send_Cmd","file":"driver/drv_ir_new.cpp","requires":"ENABLE_DRIVER_IRREMOTEESP (IRremoteESP8266)",
 			//cmddetail:"examples":""}
 			CMD_RegisterCommand("IRSend", IR_Send_Cmd, NULL);
+			CMD_RegisterCommand("IRRawTest", IR_Send_Raw_Test, NULL);
 			//cmddetail:{"name":"IRAC","args":"[TODO]",
 			//cmddetail:"descr":"Sends IR commands for HVAC control (TODO)",
 			//cmddetail:"fn":"IR_AC_Cmd","file":"driver/drv_ir_new.cpp","requires":"ENABLE_DRIVER_IRREMOTEESP (IRremoteESP8266)",
