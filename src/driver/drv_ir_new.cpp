@@ -822,6 +822,9 @@ extern "C" void DRV_IR_RunFrame() {
 					ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IRAC %s", description.c_str());
 					#endif //ENABLE_IRAC
 				}
+				
+				ADDLOG_INFO(LOG_FEATURE_IR, (char *)resultToTimingInfo(&results).c_str());
+				
 				// if user wants us to publish every received IR data, do it now
 				if (CFG_HasFlag(OBK_FLAG_IR_PUBLISH_RECEIVED)) {
 
