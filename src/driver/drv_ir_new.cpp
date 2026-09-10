@@ -805,9 +805,9 @@ extern "C" void DRV_IR_RunFrame() {
 				int repeat = results.repeat?0:1; // not sure how to deal with this
 
 				if (results.decode_type == decode_type_t::UNKNOWN) {
-					//snprintf(out, sizeof(out), "IR_RAW 0x%lX %d", (unsigned long)results.decodedRawData, repeat);
 					snprintf(out, sizeof(out), "IR %s %s", "Unknown", lastIrReceived.c_str());
 					ADDLOG_INFO(LOG_FEATURE_IR, (char *)out);
+					ADDLOG_INFO(LOG_FEATURE_IR, (char *)resultToTimingInfo(&results).c_str());
 				}
 				else if (!hasACState(results.decode_type)) {
 					snprintf(out, sizeof(out), "IR %s %lX %lX %d", proto_name.c_str(), (long int)results.address, (long int)results.command, repeat);
