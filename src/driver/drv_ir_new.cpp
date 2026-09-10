@@ -488,14 +488,16 @@ static const uint16_t wz_menu_raw[71] = {
 
 extern "C" commandResult_t IR_Send_Menu_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
     if (!pIRsend) {
-        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR Menu test: transmitter not running");
+        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR MENU test: transmitter not running");
         return CMD_RES_ERROR;
     }
 
-    pIRsend->sendRaw(wz_menu_raw, 71, 38);
+    pIRsend->send(decode_type_t::NEC, 0x61D6F807, 32, 1);
+    pIRsend->delay(150);
+    pIRsend->send(decode_type_t::NEC, 0x61D6F807, 32, 1);
     pIRsend->delay(100);
 
-    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO Menu");
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR test sent WZATCO MENU");
     return CMD_RES_OK;
 }
 
@@ -525,17 +527,33 @@ extern "C" commandResult_t IR_Send_VolUp_Test(const void *context, const char *c
     return CMD_RES_OK;
 }
 
+extern "C" commandResult_t IR_Send_Power_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
+    if (!pIRsend) {
+        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR POWER test: transmitter not running");
+        return CMD_RES_ERROR;
+    }
+
+    pIRsend->send(decode_type_t::NEC, 0x61D650AF, 32, 1);
+    pIRsend->delay(150);
+    pIRsend->send(decode_type_t::NEC, 0x61D650AF, 32, 1);
+    pIRsend->delay(100);
+
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR test sent WZATCO POWER");
+    return CMD_RES_OK;
+}
+
 extern "C" commandResult_t IR_Send_OK_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
     if (!pIRsend) {
         ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR OK test: transmitter not running");
         return CMD_RES_ERROR;
     }
 
-    pIRsend->sendRaw(wz_ok_raw, 71, 38);
+    pIRsend->send(decode_type_t::NEC, 0x61D628D7, 32, 1);
+    pIRsend->delay(150);
+    pIRsend->send(decode_type_t::NEC, 0x61D628D7, 32, 1);
     pIRsend->delay(100);
 
-    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO OK");
-
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR test sent WZATCO OK");
     return CMD_RES_OK;
 }
 
@@ -573,10 +591,12 @@ extern "C" commandResult_t IR_Send_Left_Test(const void *context, const char *cm
         return CMD_RES_ERROR;
     }
 
-    pIRsend->sendRaw(wz_left_raw, 71, 38);
+    pIRsend->send(decode_type_t::NEC, 0x61D6A857, 32, 1);
+    pIRsend->delay(150);
+    pIRsend->send(decode_type_t::NEC, 0x61D6A857, 32, 1);
     pIRsend->delay(100);
 
-    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO LEFT");
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR test sent WZATCO LEFT");
     return CMD_RES_OK;
 }
 
@@ -586,23 +606,27 @@ extern "C" commandResult_t IR_Send_Right_Test(const void *context, const char *c
         return CMD_RES_ERROR;
     }
 
-    pIRsend->sendRaw(wz_right_raw, 71, 38);
+    pIRsend->send(decode_type_t::NEC, 0x61D69A65, 32, 1);
+    pIRsend->delay(150);
+    pIRsend->send(decode_type_t::NEC, 0x61D69A65, 32, 1);
     pIRsend->delay(100);
 
-    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO RIGHT");
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR test sent WZATCO RIGHT");
     return CMD_RES_OK;
 }
 
 extern "C" commandResult_t IR_Send_Raw_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
     if (!pIRsend) {
-        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR raw test: transmitter not running");
+        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR SOURCE test: transmitter not running");
         return CMD_RES_ERROR;
     }
 
-    pIRsend->sendRaw(wz_source_raw, 71, 38);
+    pIRsend->send(decode_type_t::NEC, 0x61D6D02F, 32, 1);
+    pIRsend->delay(150);
+    pIRsend->send(decode_type_t::NEC, 0x61D6D02F, 32, 1);
     pIRsend->delay(100);
 
-    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO Source");
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR test sent WZATCO SOURCE");
     return CMD_RES_OK;
 }
 
@@ -959,6 +983,7 @@ extern "C" void DRV_IR_Init() {
 			CMD_RegisterCommand("IRSend", IR_Send_Cmd, NULL);
 			CMD_RegisterCommand("IRRawTest", IR_Send_Raw_Test, NULL);
 			CMD_RegisterCommand("IROKTest", IR_Send_OK_Test, NULL);
+			CMD_RegisterCommand("IRPowerTest", IR_Send_Power_Test, NULL);
 			CMD_RegisterCommand("IRUpTest", IR_Send_Up_Test, NULL);
 			CMD_RegisterCommand("IRDownTest", IR_Send_Down_Test, NULL);
 			CMD_RegisterCommand("IRLeftTest", IR_Send_Left_Test, NULL);
