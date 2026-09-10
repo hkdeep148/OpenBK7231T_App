@@ -386,7 +386,7 @@ static const uint16_t wz_ok_raw[71] = {
 };
 
 // WZATCO UP button
-static const uint16_t wz_up_raw[67] = {
+static const uint16_t wz_up_raw[71] = {
     8640,4320,
     576,480,576,1584,576,1584,
     528,432,576,480,576,528,576,480,
@@ -545,7 +545,7 @@ extern "C" commandResult_t IR_Send_Up_Test(const void *context, const char *cmd,
         return CMD_RES_ERROR;
     }
 
-    pIRsend->sendRaw(wz_up_raw, 67, 38);
+    pIRsend->sendRaw(wz_up_raw, 71, 38);
     pIRsend->delay(100);
 
     ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO UP");
