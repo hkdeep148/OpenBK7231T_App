@@ -807,6 +807,7 @@ extern "C" void DRV_IR_RunFrame() {
 				if (results.decode_type == decode_type_t::UNKNOWN) {
 					snprintf(out, sizeof(out), "IR %s %s", "Unknown", lastIrReceived.c_str());
 					ADDLOG_INFO(LOG_FEATURE_IR, (char *)out);
+					// Print raw IR timing information for unknown signals
 					ADDLOG_INFO(LOG_FEATURE_IR, (char *)resultToTimingInfo(&results).c_str());
 				}
 				else if (!hasACState(results.decode_type)) {
