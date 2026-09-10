@@ -558,10 +558,12 @@ extern "C" commandResult_t IR_Send_Down_Test(const void *context, const char *cm
         return CMD_RES_ERROR;
     }
 
-    pIRsend->sendRaw(wz_down_raw, 71, 38);
+    pIRsend->send(decode_type_t::NEC, 0x61D618E7, 32, 1);
+    pIRsend->delay(150);
+    pIRsend->send(decode_type_t::NEC, 0x61D618E7, 32, 1);
     pIRsend->delay(100);
 
-    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO DOWN");
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR test sent WZATCO DOWN");
     return CMD_RES_OK;
 }
 
