@@ -370,6 +370,26 @@ static const uint16_t wz_source_raw[71] = {
     37776,8544,2112,576
 };
 
+// WZATCO OK button - complete raw capture including repeat frame
+static const uint16_t wz_ok_raw[71] = {
+    8640, 4272,
+    528, 528, 576, 1536, 576, 1536,
+    576, 480, 528, 528, 576, 480, 528, 528,
+    576, 1584, 576, 1584, 528, 1584, 576, 480,
+    576, 1584, 576, 528, 576, 1584, 576, 1584,
+    576, 480, 576, 528, 576, 480, 528, 1584,
+    576, 528, 576, 1584, 576, 480, 576, 528,
+    576, 480, 576, 1584, 576, 1584, 576, 528,
+    576, 1584, 576, 480, 576, 1584, 576, 1632,
+    528, 1536, 576,
+    38016, 8496, 1968, 576
+};
+
+static void IR_Send_OK_Test(const void *arg) {
+    pIRsend->sendRaw(wz_ok_raw, 71, 38);
+    pIRsend->delay(100);
+}
+
 extern "C" commandResult_t IR_Send_Raw_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
     if (!pIRsend) {
         ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR raw test: transmitter not running");
@@ -735,6 +755,7 @@ extern "C" void DRV_IR_Init() {
 			//cmddetail:"examples":""}
 			CMD_RegisterCommand("IRSend", IR_Send_Cmd, NULL);
 			CMD_RegisterCommand("IRRawTest", IR_Send_Raw_Test, NULL);
+			CMD_RegisterCommand("IROKTest", IR_Send_OK_Test, NULL);
 			//cmddetail:{"name":"IRAC","args":"[TODO]",
 			//cmddetail:"descr":"Sends IR commands for HVAC control (TODO)",
 			//cmddetail:"fn":"IR_AC_Cmd","file":"driver/drv_ir_new.cpp","requires":"ENABLE_DRIVER_IRREMOTEESP (IRremoteESP8266)",
