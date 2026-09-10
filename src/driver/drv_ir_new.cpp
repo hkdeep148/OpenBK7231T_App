@@ -385,6 +385,119 @@ static const uint16_t wz_ok_raw[71] = {
     38016, 8496, 1968, 576
 };
 
+// WZATCO UP button
+static const uint16_t wz_up_raw[71] = {
+    11520,5696,
+    768,704,768,2112,768,2112,
+    768,640,768,704,768,640,768,704,
+    768,2112,768,2112,768,2112,768,640,
+    768,2112,768,704,768,2048,768,2048,
+    704,704,768,2048,768,704,704,2176,
+    704,704,768,2112,768,576,704,2176,
+    704,704,768,704,768,2112,704,704,
+    768,2112,768,704,768,2112,704,704,
+    704,2112,768,
+    50816,11456,2880,768
+};
+
+// WZATCO DOWN button
+static const uint16_t wz_down_raw[71] = {
+    11392,5632,
+    768,640,768,2112,768,2112,
+    768,704,704,704,768,704,768,640,
+    768,2112,768,2112,768,2112,768,640,
+    704,2176,704,704,768,2112,768,2112,
+    768,640,768,704,768,704,704,704,
+    768,2112,768,2112,768,704,704,704,
+    768,704,704,2176,704,2176,704,2112,
+    768,704,768,704,704,2176,704,2176,
+    704,2176,704,
+    50304,11392,2816,768
+};
+
+// WZATCO LEFT button
+static const uint16_t wz_left_raw[71] = {
+    11520,5696,
+    768,704,768,2112,704,2176,
+    704,704,704,704,768,640,768,704,
+    640,2048,768,2112,704,2176,704,576,
+    640,2112,768,704,768,2048,704,2176,
+    704,704,768,2112,768,704,704,2176,
+    704,704,768,2112,768,704,704,768,
+    704,704,704,704,704,2176,704,704,
+    704,2176,704,768,704,2176,704,2176,
+    704,2112,768,
+    50304,11456,2880,768
+};
+
+// WZATCO RIGHT button
+static const uint16_t wz_right_raw[71] = {
+    11456,5696,
+    768,640,768,2112,768,2112,
+    768,704,768,640,768,704,768,640,
+    768,2112,768,2048,768,2112,768,704,
+    768,2112,768,640,768,2112,768,2112,
+    768,704,768,2112,768,640,768,704,
+    768,2112,768,2112,768,640,768,2112,
+    768,704,768,640,768,2112,768,2112,
+    768,704,768,640,768,2176,704,704,
+    768,2112,768,
+    50624,11392,2880,768
+};
+
+static const uint16_t wz_vol_down_raw[71] = {
+    8640,4224,
+    576,528,576,1488,528,1632,
+    528,528,576,528,576,480,480,528,
+    576,1584,528,1536,528,2448,576,528,
+    528,1488,528,1632,528,528,528,528,
+    432,480,432,336,576,1488,576,480,
+    528,480,576,1584,528,432,576,1584,
+    576,1584,576,1536,576,528,576,1584,
+    576,1536,576,480,576,1632,528,
+    37776,8448,1920,528,89760,8496,2112,576
+};
+
+static const uint16_t wz_vol_up_raw[71] = {
+    8640,4272,
+    528,480,576,1584,576,1584,
+    576,528,576,480,576,528,576,528,
+    528,1632,528,1632,528,1584,576,528,
+    576,1584,576,528,528,1632,528,1584,
+    576,528,576,528,528,1536,576,1584,
+    576,1536,576,528,576,480,576,528,
+    576,528,480,1632,528,576,528,528,
+    528,576,528,1632,528,1584,528,1584,
+    576,1536,576,
+    37824,8544,2160,576
+};
+
+extern "C" commandResult_t IR_Send_VolDown_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
+    if (!pIRsend) {
+        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR Volume Down test: transmitter not running");
+        return CMD_RES_ERROR;
+    }
+
+    pIRsend->sendRaw(wz_vol_down_raw, 71, 38);
+    pIRsend->delay(100);
+
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO Volume Down");
+    return CMD_RES_OK;
+}
+
+extern "C" commandResult_t IR_Send_VolUp_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
+    if (!pIRsend) {
+        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR Volume Up test: transmitter not running");
+        return CMD_RES_ERROR;
+    }
+
+    pIRsend->sendRaw(wz_vol_up_raw, 71, 38);
+    pIRsend->delay(100);
+
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO Volume Up");
+    return CMD_RES_OK;
+}
+
 extern "C" commandResult_t IR_Send_OK_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
     if (!pIRsend) {
         ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR OK test: transmitter not running");
@@ -396,6 +509,58 @@ extern "C" commandResult_t IR_Send_OK_Test(const void *context, const char *cmd,
 
     ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO OK");
 
+    return CMD_RES_OK;
+}
+
+extern "C" commandResult_t IR_Send_Up_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
+    if (!pIRsend) {
+        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR UP test: transmitter not running");
+        return CMD_RES_ERROR;
+    }
+
+    pIRsend->sendRaw(wz_up_raw, 71, 38);
+    pIRsend->delay(100);
+
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO UP");
+    return CMD_RES_OK;
+}
+
+extern "C" commandResult_t IR_Send_Down_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
+    if (!pIRsend) {
+        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR DOWN test: transmitter not running");
+        return CMD_RES_ERROR;
+    }
+
+    pIRsend->sendRaw(wz_down_raw, 71, 38);
+    pIRsend->delay(100);
+
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO DOWN");
+    return CMD_RES_OK;
+}
+
+extern "C" commandResult_t IR_Send_Left_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
+    if (!pIRsend) {
+        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR LEFT test: transmitter not running");
+        return CMD_RES_ERROR;
+    }
+
+    pIRsend->sendRaw(wz_left_raw, 71, 38);
+    pIRsend->delay(100);
+
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO LEFT");
+    return CMD_RES_OK;
+}
+
+extern "C" commandResult_t IR_Send_Right_Test(const void *context, const char *cmd, const char *args_in, int cmdFlags) {
+    if (!pIRsend) {
+        ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR RIGHT test: transmitter not running");
+        return CMD_RES_ERROR;
+    }
+
+    pIRsend->sendRaw(wz_right_raw, 71, 38);
+    pIRsend->delay(100);
+
+    ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR raw test sent WZATCO RIGHT");
     return CMD_RES_OK;
 }
 
@@ -765,6 +930,12 @@ extern "C" void DRV_IR_Init() {
 			CMD_RegisterCommand("IRSend", IR_Send_Cmd, NULL);
 			CMD_RegisterCommand("IRRawTest", IR_Send_Raw_Test, NULL);
 			CMD_RegisterCommand("IROKTest", IR_Send_OK_Test, NULL);
+			CMD_RegisterCommand("IRUpTest", IR_Send_Up_Test, NULL);
+			CMD_RegisterCommand("IRDownTest", IR_Send_Down_Test, NULL);
+			CMD_RegisterCommand("IRLeftTest", IR_Send_Left_Test, NULL);
+			CMD_RegisterCommand("IRRightTest", IR_Send_Right_Test, NULL);
+			CMD_RegisterCommand("IRVolDownTest", IR_Send_VolDown_Test, NULL);
+			CMD_RegisterCommand("IRVolUpTest", IR_Send_VolUp_Test, NULL);
 			//cmddetail:{"name":"IRAC","args":"[TODO]",
 			//cmddetail:"descr":"Sends IR commands for HVAC control (TODO)",
 			//cmddetail:"fn":"IR_AC_Cmd","file":"driver/drv_ir_new.cpp","requires":"ENABLE_DRIVER_IRREMOTEESP (IRremoteESP8266)",
