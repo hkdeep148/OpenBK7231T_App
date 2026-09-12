@@ -535,6 +535,9 @@ extern "C" commandResult_t IR_Send_Power_Test(const void *context, const char *c
         return CMD_RES_ERROR;
     }
 
+    // Send 3 times for reliability
+    pIRsend->send(decode_type_t::NEC, 0x61D650AF, 32, 1);
+    pIRsend->delay(150);
     pIRsend->send(decode_type_t::NEC, 0x61D650AF, 32, 1);
     pIRsend->delay(150);
     pIRsend->send(decode_type_t::NEC, 0x61D650AF, 32, 1);
